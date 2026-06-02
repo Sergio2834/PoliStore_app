@@ -13,7 +13,7 @@ const Navbar = () => {
         
         <ul className="hidden xl:flex space-x-6"> {/*di default nasconde la lista e la mostra solo su schermi extra large; space-x-6 aggiunge uno spazio orizzontale di 1.5rem tra gli elementi della lista*/}
             <li className="cursor-pointer hover:text-[#e50914]">Home</li> {/*cursore a manina e quando si passa sopra cambia il colore del testo in rosso*/}
-            <li className="cursor-pointer hover:text-[#e50914]">Avventura</li>
+            <li className="cursor-pointer hover:text-[#e50914]">Libri di Avventura</li>
             <li className="cursor-pointer hover:text-[#e50914]">Romanzi Gialli</li>
             <li className="cursor-pointer hover:text-[#e50914]">Thriller</li>
             <li className="cursor-pointer hover:text-[#e50914]">Per bambini</li>
