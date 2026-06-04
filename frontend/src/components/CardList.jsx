@@ -2,6 +2,7 @@ import React from "react"; //per le nuove uscite, visitati di recente ecc//
 import CardImg from "../assets/book_image1.jpg"
 import { Swiper, SwiperSlide } from "swiper/react"; //importato lo slider da swiper.js : min 50:16 del video// 
 import "swiper/css";
+import {Link} from "react-router" //importato react router (per installarlo fai npm install react-router)
 
 
 const CardList = () => {
@@ -69,9 +70,12 @@ const CardList = () => {
     
       <Swiper slidesPerView={"auto"} spaceBetween={10} className="mySwiper">
        {data.map((item, index) => (
-        <SwiperSlide key={index} className="max-w-72"> {/*logica dello swiper modificata//*/}
-            <img src={CardImg} alt="" className="h-44 w-full object-center object-cover"/>
+        <SwiperSlide key={index} className="max-w-72"> {/*logica dello swiper modificata*/}
+            <Link to={`/libro/${item.id}`}> {/*link dinamico che lui fa per i film, noi faremo per i libri*/}
+            <img src={CardImg} alt="" className="h-90 w-full object-center object-cover"/>
             <p className="text-center pt-2">Un libro veramente fiko, mai quanto Sergio</p>
+            </Link>
+        
         </SwiperSlide>      
         
        ))}
