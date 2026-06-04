@@ -1,5 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap');
 @import "tailwindcss";
 
+* {
+  font-family: 'Merriweather', sans-serif; /* Cambiato font e impostato per tutti, se non disponibile userà sans-serif*/ 
+}
 body {
   background-color: #1a202c; /* Cambiato colore sfondo*/
 }
