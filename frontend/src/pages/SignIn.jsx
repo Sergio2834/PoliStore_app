@@ -25,14 +25,14 @@ const SignIn = () => {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)} 
-                placeholder="username" 
+                placeholder="Mario Rossi" 
                 className='w-full h-[50px] bg-[#333] text-white rounded px-5 text-base'/> {/* onChange è un evento che si attiva ogni volta che il valore dell'input cambia; in questo caso, quando l'utente digita qualcosa nell'input, la funzione setUsername viene chiamata con il nuovo valore dell'input, aggiornando così lo stato username*/}
 
                 <input 
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)} 
-                placeholder="password" 
+                placeholder="Inserisci la tua password" 
                 className='w-full h-[50px] bg-[#333] text-white rounded px-5 text-base'/>
 
                 <button 

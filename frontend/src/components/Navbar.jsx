@@ -33,13 +33,13 @@ const Navbar = () => {
             </div>
             <Link to={"/carrello"}> {/*Apre una nuova pagina quando si clicca sul pulsante del carrello*/}
             
-            <button className='flex justify-center items-center bg-white text-black py-3 px-4 rounded-full cursor-pointer text-sm md:text-base'>
+            <button className='flex justify-center items-center h-9 bg-white text-black py-3 px-4 rounded-full cursor-pointer text-sm md:text-base'>
                 <ShoppingCart className="mr-2 w-4 h-5 md:w-5 md:h-5" />Carrello
             </button>
             </Link>
             <Link to={"/signin"}> {/*Apre una nuova pagina quando si clicca sul pulsante di accesso*/}
-            <button className="border border-[#333333] py-2 px-4 cursor-pointer">
-              Sign In
+            <button className="border bg-[#e50914] flex justify-center items-center border-[#333333] h-9 rounded-full py-2 px-4 cursor-pointer">
+              Accedi
             </button>
             </Link>
         </div>
