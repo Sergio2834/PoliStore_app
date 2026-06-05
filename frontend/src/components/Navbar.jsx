@@ -27,7 +27,7 @@ const Navbar = () => {
                 <input 
                     type="text"
                     className="bg-[#333333] px-4 py-2 rounded-full min-w-72 pr-10 outline-none" /*rounded-full rende l'input completamente arrotondato; min-w-72 imposta una larghezza minima di 18rem; pr-10 aggiunge un padding a destra di 2.5rem per fare spazio all'icona di ricerca; outline-none rimuove il bordo di focus predefinito*/
-                    placeholder='Search...' />
+                    placeholder='Cerca...' />
                 <Search className="absolute top-2 right-4 w-5 h-5" /> {/*posizione assoluta per sovrapporre l'icona all'input; top-2 posiziona l'icona a 0.5rem dall'alto; right-4 posiziona l'icona a 1rem da destra; w-5 e h-5 impostano la larghezza e l'altezza dell'icona a 1.25rem*/}
             
             </div>
