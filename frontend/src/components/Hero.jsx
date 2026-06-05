@@ -13,4 +13,4 @@ const Hero = () => {
     )
 }
     
-export default Hero
+export default Hero //da vedere l'altro video min 1:30:00 https://youtu.be/pgw2KPfgK1E //
