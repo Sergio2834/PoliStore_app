@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-import { Search } from 'lucide-react'
+import { Search, ShoppingCart } from 'lucide-react'
 import Logo from "../assets/logo.png";
 const Navbar = () => {
   return (
@@ -31,6 +31,12 @@ const Navbar = () => {
                 <Search className="absolute top-2 right-4 w-5 h-5" /> {/*posizione assoluta per sovrapporre l'icona all'input; top-2 posiziona l'icona a 0.5rem dall'alto; right-4 posiziona l'icona a 1rem da destra; w-5 e h-5 impostano la larghezza e l'altezza dell'icona a 1.25rem*/}
             
             </div>
+            <Link to={"/carrello"}> {/*Apre una nuova pagina quando si clicca sul pulsante del carrello*/}
+            
+            <button className='flex justify-center items-center bg-white text-black py-3 px-4 rounded-full cursor-pointer text-sm md:text-base'>
+                <ShoppingCart className="mr-2 w-4 h-5 md:w-5 md:h-5" />Carrello
+            </button>
+            </Link>
             <Link to={"/signin"}> {/*Apre una nuova pagina quando si clicca sul pulsante di accesso*/}
             <button className="border border-[#333333] py-2 px-4 cursor-pointer">
               Sign In
