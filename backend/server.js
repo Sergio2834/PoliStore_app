@@ -4,16 +4,104 @@
 import express from 'express'; //Devi fare npm install express prima di eseguire questo codice//
 import { connectToDB } from './config/db.js'; //importa la funzione per connettersi al database//
 import dotenv from 'dotenv'; //Devi fare npm install dotenv prima di eseguire questo codice, perchè node non sa leggere file .env//
+import User from "./models/user.model.js";
+import bcryptjs from 'bcryptjs'; //Devi fare npm install bcryptjs prima di eseguire questo codice, perchè node non sa leggere file .env//
+import jwt from 'jsonwebtoken'; //Devi fare npm install jsonwebtoken prima di eseguire questo codice, perchè node non sa leggere file .env//
 
 dotenv.config(); //carica le variabili d'ambiente dal file .env, così puoi usarle nel tuo codice con process.env.NOME_VARIABILE//
 
 const app = express();
+
+//Middlewares
+app.use(express.json()); //per far si che il server possa leggere i dati in formato JSON che arrivano dalle richieste, altrimenti non riuscirebbe a capire cosa stai mandando
 
 const PORT = process.env.PORT || 5000; 
 
 app.get("/", (req, res) => {
     res.send("Sergio gay 4!")
 
+})
+
+app.post("/api/signup", async (req, res) => {
+    const {username, email, password } = req.body;
+    console.log(username, email, password)
+    try{
+        if(!username || !email || !password){
+            throw new Error("tutti i campi sono obbligatori");
+        }
+
+        const emailExists = await User.findOne({email});
+        if(emailExists){
+            return res.status(400).json({message: "Utente già esistente"});
+        }
+
+        const usernameExists = await User.findOne({username});
+        if(usernameExists){
+            return res
+            .status(400)
+            .json({message: "Questo username è già in uso, scegline un altro"});
+        }
+
+        const hashedPassword = await bcryptjs.hash(password, 10); //hasha la password con un sale di 10, applica cioè l'algoritmo di hashing 10 volte
+        const userDoc = await User.create({
+            username,
+            email,
+            password: hashedPassword,
+        });
+
+        // JWT
+
+        if(userDoc){
+            const token = jwt.sign({id: userDoc._id}, process.env.JWT_SECRET, {
+                expiresIn: "7d", //il token con le info salvate scade dopo 7 giorni
+            });
+            res.cookie("token", token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "strict",
+            });
+        } 
+        return res.status(200).json({user: userDoc, message: "Utente creato correttamente!"})
+    }catch(error){
+        res.status(400).json({message: error.message})
+    }
+    
+});
+
+app.post("/api/login", async (req, res) => {
+    const {username, password} = req.body;
+    try{
+        const  userDoc = await User.findOne({username});
+        if(!userDoc){
+            return res.status(400).json({message: "Credenziali non valide."});
+        }
+
+        const isPasswordValid = await bcryptjs.compareSync(
+            password,
+            userDoc.password
+        )
+
+        if(!isPasswordValid){
+            return res.status(400).json({message: "Credenziali non valide."});
+        }
+
+        //JWT
+
+        if(userDoc){
+            const token = jwt.sign({id: userDoc._id}, process.env.JWT_SECRET, {
+                expiresIn: "7d", //il token con le info salvate scade dopo 7 giorni
+            });
+            res.cookie("token", token, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "strict",
+            });
+        } 
+        return res.status(200).json({user: userDoc, message: "Accesso effettuato correttamente!"})
+    }catch(error){
+        console.log("Errore nell'accesso", error.message);
+        res.status(400).json({message: error.message})
+    }
 })
 
 app.listen(PORT, () => {
