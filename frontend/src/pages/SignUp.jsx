@@ -1,11 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useAuthStore } from '../store/authStore'; //useAuthStore è un hook che permette di accedere allo store; in questo caso, stiamo importando lo store che contiene le informazioni dell'utente e le funzioni per modificarle//
+
 
 const SignUp = () => {
    const navigate = useNavigate(); //Ti porta da Signin a Signup e viceversa//
    const [username, setUsername] = useState("") //useState è un hook che permette di creare uno stato locale all'interno di un componente funzionale; in questo caso, username è lo stato che contiene il valore dell'input e setUsername è la funzione che permette di aggiornare questo stato; inizialmente, lo stato è una stringa vuota//
    const [email, setEmail] = useState("")
    const [password, setPassword] = useState("")
+   const {signup, isLoading, error} = useAuthStore() //useAuthStore è un hook che permette di accedere allo store; in questo caso, stiamo estraendo le funzioni signup, isLoading e error dallo store//
+   
+   const handleSignUp = async (e) => {
+    e.preventDefault() //previene il comportamento predefinito del form, che è quello di ricaricare la pagina quando viene inviato; in questo modo, possiamo gestire l'invio del form in modo personalizzato senza dover ricaricare la pagina//
+    
+    try {
+      await signup(username, email, password) //chiama la funzione signup dello store passando come argomenti i valori degli input; questa funzione fa una richiesta al server per registrare un nuovo utente e aggiorna lo stato dello store con le informazioni dell'utente e eventuali messaggi di errore o successo//
+      navigate("/");
+
+    }catch (error) {
+      console.log(error);
+
+    }
+   }
    
    console.log("Username: ", username, "\nEmail: ", email, "\nPassword: ", password)
   
@@ -19,7 +35,7 @@ const SignUp = () => {
         
         <div className='max-w-[450px] w-full bg-black bg-opacity-75 rounded px-8 py-14 mx-auto'>
             <h1 className='text-3xl font-medium text-white mb-7'>Registrazione</h1>
-            <form className='flex flex-col space-y-4'>
+            <form onSubmit={handleSignUp} className='flex flex-col space-y-4'>
                 <input 
                   type="text" 
                   value={username} onChange={(e) => setUsername(e.target.value)}  
@@ -38,8 +54,11 @@ const SignUp = () => {
                   placeholder="Inserisci la tua password" 
                   className='w-full h-[50px] bg-[#333] text-white rounded px-5 text-base'/>
 
+                  {error && <p className='text-red-500'>{error}</p>} //se c'è un errore, viene mostrato un messaggio di errore sotto il form; error è lo stato che contiene eventuali messaggi di errore dello store//
+
                 <button 
-                  type='submit' 
+                  type='submit'
+                  disabled={isLoading} //disabilita il pulsante quando isLoading è true, impedendo all'utente di inviare più volte il form mentre la richiesta è in corso// 
                   className='w-full bg-[#e50914] text-white py-2 rounded text-base hover:opacity-90 cursor pointer'
                   >
                     Registrati
