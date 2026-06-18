@@ -7,13 +7,18 @@ import dotenv from 'dotenv'; //Devi fare npm install dotenv prima di eseguire qu
 import User from "./models/user.model.js";
 import bcryptjs from 'bcryptjs'; //Devi fare npm install bcryptjs prima di eseguire questo codice, perchè node non sa leggere file .env//
 import jwt from 'jsonwebtoken'; //Devi fare npm install jsonwebtoken prima di eseguire questo codice, perchè node non sa leggere file .env//
+import cookieParser from 'cookie-parser'; //Devi fare npm install cookie-parser prima di eseguire questo codice, perchè node non sa leggere file .env//
+import cors from 'cors'; //Devi fare npm install cors, cors serve per permettere al frontend di fare richieste al backend, altrimenti il browser bloccherebbe le richieste per motivi di sicurezza (CORS)//
 
 dotenv.config(); //carica le variabili d'ambiente dal file .env, così puoi usarle nel tuo codice con process.env.NOME_VARIABILE//
+
 
 const app = express();
 
 //Middlewares
 app.use(express.json()); //per far si che il server possa leggere i dati in formato JSON che arrivano dalle richieste, altrimenti non riuscirebbe a capire cosa stai mandando
+app.use(cookieParser()); //per far si che il server possa leggere i cookie che arrivano dalle richieste, altrimenti non riuscirebbe a capire cosa stai mandando
+app.use(cors({origin: process.env.CLIENT_URL, credentials: true})); //per permettere al frontend di fare richieste al backend, altrimenti il browser bloccherebbe le richieste per motivi di sicurezza (CORS); origin è l'url del frontend, credentials: true permette di inviare cookie insieme alle richieste//
 
 const PORT = process.env.PORT || 5000; 
 
@@ -102,7 +107,38 @@ app.post("/api/login", async (req, res) => {
         console.log("Errore nell'accesso", error.message);
         res.status(400).json({message: error.message})
     }
-})
+});
+
+app.get("/api/fetch-user", async (req, res) => {
+    const { token } = req.cookies; //prende il token dai cookie, che è dove lo abbiamo salvato quando l'utente si è loggato o registrato
+
+    if(!token){
+        return res.status(401).json({message: "Non autorizzato, token mancante."});
+    }
+
+    try{
+        const decoded = jwt.verify(token, process.env.JWT_SECRET); //verifica che il token sia valido e non scaduto, e decodifica le info salvate al suo interno
+        if(!decoded){
+            return res.status(401).json({message: "Non autorizzato, token non valido."});
+        }
+
+        const userDoc = await User.findById(decoded.id).select("-password"); //trova l'utente nel database usando l'id salvato nel token, e esclude la password dalla risposta
+        if(!userDoc){
+            return res.status(400).json({message: "Utente non trovato."});
+        }
+
+        res.status(200).json({user: userDoc});
+    }catch (error){
+        console.log("Errore nel recupero dell'utente", error.message);
+        res.status(400).json({message: error.message});
+    }     
+
+});
+
+app.post("/api/logout", async (req, res) => {
+    res.clearCookie("token");
+    res.status(200).json({message: "Logout effettuato correttamente!"});
+});
 
 app.listen(PORT, () => {
     connectToDB(); //collega il database quando il server parte, così non devi preoccuparti di farlo manualmente ogni volta che avvii il server//
