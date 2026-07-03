@@ -3,10 +3,21 @@ import Homepage from './pages/Homepage'
 import SignUp from './pages/SignUp' 
 import SignIn from './pages/SignIn' 
 import { Route, Routes } from 'react-router'
+import {Toaster} from "react-hot-toast" //ovviamente ti basta fare npm intsall e installa automaticamente questo che serve per poi mostare il messaggio di accesso effettuato correttamente
+import { useAuthStore } from './store/authStore'
+import { useEffect } from 'react'
 
 const App = () => {
+  const {fetchUser, fetchingUser} = useAuthStore();
+  useEffect(() => {
+    fetchUser()
+  }, [fetchUser])
+  if(fetchingUser){
+    return <p>Loading...</p>
+  }
   return (
     <div>
+      <Toaster />
       <Navbar />
       
       <Routes>

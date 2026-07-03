@@ -1,6 +1,7 @@
 import {create} from "zustand"; //Zustand è una libreria per la gestione dello stato globale in React; create è una funzione che permette di creare uno store, ovvero un oggetto che contiene lo stato e le funzioni per modificarlo//
 import axios from "axios"; //Axios è una libreria che permette di fare richieste HTTP; in questo caso, viene utilizzata per fare richieste al server per registrare un nuovo utente//
 
+const API_URL = "http://localhost:5000/api"
 
 axios.defaults.withCredentials = true; //per permettere a axios di inviare cookie insieme alle richieste, altrimenti il server non riceverebbe i cookie e non potrebbe autenticare l'utente//
 export const useAuthStore = create((set) => ({ //useAuthStore è un hook che permette di accedere allo store; set è una funzione che permette di aggiornare lo stato dello store//
@@ -19,8 +20,8 @@ export const useAuthStore = create((set) => ({ //useAuthStore è un hook che per
 
         try {
 
-            const response = await axios.post("http://localhost:5000/api/signup", { 
-                username, email, password 
+            const response = await axios.post(`${API_URL}/signup`, { 
+                username, email, password, 
             }); //fa una richiesta POST al server per registrare un nuovo utente; passa come body della richiesta le informazioni dell'utente//
 
             set({ user: response.data.user, isLoading: false}) //setta lo stato user con le informazioni dell'utente, isLoading a false e message con il messaggio di successo del server//
@@ -32,5 +33,48 @@ export const useAuthStore = create((set) => ({ //useAuthStore è un hook che per
 
                 throw error; //lancia l'errore in modo che possa essere gestito dal componente che ha chiamato la funzione signup//    
             }
-    } 
-}))
+    },
+
+    login: async (username, password) => {
+        set({isLoading: true, message: null, error: null });
+
+        try{
+            const response = await axios.post(`${API_URL}/login`, {
+                username, 
+                password,
+            });
+
+            const {user, message} = response.data;
+
+            set({
+                user,
+                message,
+                isLoading: false,
+            });
+
+            return {user, message};
+        }catch (error){
+            set({
+                isLoading: false, 
+                error: error.response.data.message || "C'è stato un errore durante l'accesso"
+            }); 
+
+            throw error;
+        }
+    }, 
+
+    fetchUser: async () => {
+        set({fetchingUser: true, error: null});
+        try {
+            const response = await axios.get(`${API_URL}/fetch-user`)
+            set({user: response.data.user, fetchingUser: false})
+        } catch (error) {
+            set({
+                isLoading: false, 
+                error: error.response.data.message || "C'è stato un errore nel prelevare le informazioni relative all'utente"
+            }); 
+
+            throw error;
+        }
+    }
+}));
