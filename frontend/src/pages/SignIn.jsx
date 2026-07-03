@@ -1,13 +1,24 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
+import {useAuthStore} from "../store/authStore";
+import toast from 'react-hot-toast';
 
 const SignIn = () => {
      const navigate = useNavigate(); //Ti porta da Signin a Signup e viceversa//
      const [username, setUsername] = useState("");
      const [password, setPassword] = useState(""); //useState è un hook che permette di creare uno stato locale all'interno di un componente funzionale; in questo caso, username è lo stato che contiene il valore dell'input e setUsername è la funzione che permette di aggiornare questo stato; inizialmente, lo stato è una stringa vuota//
+     const {login, isLoading, error} = useAuthStore();
      
-     console.log("Username: ", username, "\nPassword: ", password) //Mette la console per vedere se funziona (ispeziona la pagina, va su console e vede che sta ricevendo in input quello che gli scrivi), a quanto ho capito si può tenere solo su una pagina alla volta//
-   
+     const handleLogin = async (e) => {
+        e.preventDefault();
+        try{
+            const {message} = await login(username, password) //estraiamo il messaggio di login avvenuto correttamente
+            toast.success(message); //mostra il messaggio di login avvenuto correttamente estratto alla riga prima 
+            navigate("/")
+        } catch(error){
+            console.log(error)
+        }
+     }
  
      return (
      <div
@@ -20,7 +31,7 @@ const SignIn = () => {
         
         <div className='max-w-[450px] w-full bg-black bg-opacity-75 rounded px-8 py-14 mx-auto'>
             <h1 className='text-3xl font-medium text-white mb-7'>Accesso</h1>
-            <form className='flex flex-col space-y-4'>
+            <form onSubmit = {handleLogin} className='flex flex-col space-y-4'>
                 <input 
                 type="text"
                 value={username}
@@ -35,8 +46,11 @@ const SignIn = () => {
                 placeholder="Inserisci la tua password" 
                 className='w-full h-[50px] bg-[#333] text-white rounded px-5 text-base'/>
 
+                {error && <p className="text-red-500">{error}</p>}
+
                 <button 
-                type='submit' 
+                type='submit'
+                disabled={isLoading} 
                 className='w-full bg-[#e50914] text-white py-2 rounded text-base hover:opacity-90 cursor-pointer'
                 >
                     Accedi
