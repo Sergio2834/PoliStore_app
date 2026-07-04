@@ -64,17 +64,48 @@ export const useAuthStore = create((set) => ({ //useAuthStore è un hook che per
     }, 
 
     fetchUser: async () => {
-        set({fetchingUser: true, error: null});
+        set({ fetchingUser: true, error: null });
         try {
-            const response = await axios.get(`${API_URL}/fetch-user`)
-            set({user: response.data.user, fetchingUser: false})
+            const response = await axios.get(`${API_URL}/fetch-user`);
+            set({ user: response.data.user, fetchingUser: false });
         } catch (error) {
+            // Se l'errore è 401, significa solo che l'utente non è loggato (è un ospite).
+            // Non è un vero errore di sistema, quindi svuotiamo l'utente e non mostriamo errori rossi.
+            const isUnauthorized = error.response && error.response.status === 401;
+            
             set({
-                isLoading: false, 
-                error: error.response.data.message || "C'è stato un errore nel prelevare le informazioni relative all'utente"
+                user: null,
+                fetchingUser: false, // Corretto: prima c'era isLoading: false
+                error: isUnauthorized ? null : (error.response?.data?.message || "C'è stato un errore nel prelevare le informazioni relative all'utente")
             }); 
 
-            throw error;
+            // RIMOSSO: throw error; <- Era questo a causare l'errore "Uncaught" in console!
         }
+    },
+
+    logout: async () => {
+    set({ isLoading: true, error: null, message: null });
+
+    try {
+      const response = await axios.post(`${API_URL}/logout`);
+      const { message } = response.data;
+      set({
+        message,
+        isLoading: false,
+        user: null,
+        error: null,
+      });
+
+      return { message };
+    } catch (error) {
+      set({
+        isLoading: false,
+        error: error.response.data.message || "C'è stato un errore durante il logout",
+      });
+
+      throw error;
     }
+  }
+
+
 }));
