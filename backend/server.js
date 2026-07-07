@@ -5,6 +5,7 @@ import express from 'express'; //Devi fare npm install express prima di eseguire
 import { connectToDB } from './config/db.js'; //importa la funzione per connettersi al database//
 import dotenv from 'dotenv'; //Devi fare npm install dotenv prima di eseguire questo codice, perchè node non sa leggere file .env//
 import User from "./models/user.model.js";
+import Book from "./models/book.model.js";
 import bcryptjs from 'bcryptjs'; //Devi fare npm install bcryptjs prima di eseguire questo codice, perchè node non sa leggere file .env//
 import jwt from 'jsonwebtoken'; //Devi fare npm install jsonwebtoken prima di eseguire questo codice, perchè node non sa leggere file .env//
 import cookieParser from 'cookie-parser'; //Devi fare npm install cookie-parser prima di eseguire questo codice, perchè node non sa leggere file .env//
@@ -138,6 +139,35 @@ app.get("/api/fetch-user", async (req, res) => {
 app.post("/api/logout", async (req, res) => {
     res.clearCookie("token");
     res.status(200).json({message: "Logout effettuato correttamente!"});
+});
+
+// Rotta per ottenere tutti i libri (per i caroselli del frontend)
+app.get("/api/books", async (req, res) => {
+    try {
+        // Cerca tutti i libri e li ordina dal più recente al più vecchio
+        const books = await Book.find().sort({ createdAt: -1 });
+        res.status(200).json(books); // Usiamo .json() invece di .send() per mantenere coerenza con il tuo codice
+    } catch (error) {
+        console.error("Errore nel recupero dei libri", error);
+        res.status(500).json({ message: "Impossibile recuperare i libri" });
+    }
+});
+
+// Rotta per ottenere un singolo libro tramite il suo ID (se ti serve aprire una pagina di dettaglio)
+app.get("/api/books/:id", async (req, res) => {
+    try {
+        const { id } = req.params;
+        const book = await Book.findById(id);
+        
+        if (!book) {
+            return res.status(404).json({ message: "Libro non trovato!" });
+        }
+        
+        res.status(200).json(book);
+    } catch (error) {
+        console.error("Errore nel recupero del libro", error);
+        res.status(500).json({ message: "Impossibile recuperare il libro" });
+    }
 });
 
 app.listen(PORT, () => {

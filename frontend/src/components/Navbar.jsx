@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router'
-import { Search, ShoppingCart } from 'lucide-react'
+import { Search, ShoppingCart, Heart } from 'lucide-react'
 import Logo from "../assets/logo.png";
 import { useAuthStore } from '../store/authStore';
 import { useState } from 'react';
@@ -49,7 +49,7 @@ const Navbar = () => {
                 <Link to={"/carrello"}> {/*Apre una nuova pagina quando si clicca sul pulsante del carrello*/}
                 
                 <button className='flex justify-center items-center h-9 bg-white text-black py-3 px-4 rounded-full cursor-pointer text-sm md:text-base'>
-                    <ShoppingCart className="mr-2 w-4 h-5 md:w-5 md:h-5" />Carrello
+                    <Heart className="mr-2 w-4 h-5 md:w-5 md:h-5" />Preferiti
                 </button>
                 </Link>
 
