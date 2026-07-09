@@ -1,15 +1,51 @@
 import React from 'react';
 import { Heart } from 'lucide-react';
-import {Link} from "react-router" //importato react router (per installarlo fai npm install react-router)
+import { Link } from "react-router"; // Assicurati che l'import sia corretto in base al tuo router
 import toast from 'react-hot-toast';
 import { getImgUrl } from '../utils/getImgUrl';
+import { useAuthStore } from '../store/authStore';
 
 const BookCard = ({ book }) => {
+    // 1. Estrai l'utente in cima al componente (come in SingleBook)
+    const { user } = useAuthStore();
 
-    const handleAddToFavorites = () => {
-        // Qui in futuro ci sarà la chiamata API al backend
-        console.log("Aggiunto ai preferiti il libro con ID:", book._id);
-        toast.success(`"${book.title}" aggiunto ai preferiti!`);
+    const handleAddToFavorites = async (e) => {
+        // 2. Blocca la navigazione accidentale quando clicchi sul bottone
+       if (e && e.preventDefault) e.preventDefault(); 
+
+        // 3. Controllo login
+        if (!user) {
+            toast.error("Devi essere connesso per aggiungere un libro ai preferiti.");
+            return;
+        }
+
+        try {
+            // 4. Chiamata al backend
+            const response = await fetch(`http://localhost:5000/api/users/favorites/${book._id}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include' // Invia il token
+            });
+
+            const data = await response.json();
+
+           if (response.ok) {
+                // Mostra il toast "Aggiunto" o "Rimosso" inviato dal backend
+                toast.success(data.message);
+                
+                // Se siamo sulla pagina Preferiti, ricarichiamo per far sparire la card!
+                if (window.location.pathname === '/preferiti') {
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 500); // Aspetta mezzo secondo per far leggere il toast
+                }
+            } else {
+                toast.error(data.message || "Errore");
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Errore di connessione.");
+        }
     }
 
     return (
@@ -34,7 +70,7 @@ const BookCard = ({ book }) => {
                 
                 <button 
                     onClick={handleAddToFavorites}
-                    className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md flex items-center justify-center gap-2 transition-colors"
+                    className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md flex items-center justify-center gap-2 transition-colors cursor-pointer"
                 >
                     <Heart className="w-5 h-5" /> 
                     <span className="text-sm font-medium">Preferiti</span>

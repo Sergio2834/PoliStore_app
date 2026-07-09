@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import Hero from '../components/Hero';
 import CardList from '../components/CardList';
 import Footer from '../components/Footer';
+import { useAuthStore } from '../store/authStore';
 
 const Homepage = () => {
     const [books, setBooks] = useState([]);
