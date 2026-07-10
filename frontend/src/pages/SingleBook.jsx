@@ -3,11 +3,13 @@ import { Heart } from 'lucide-react';
 import { useParams } from "react-router"
 import toast from 'react-hot-toast';
 import { getImgUrl } from '../utils/getImgUrl';
+import { useAuthStore } from '../store/authStore';
 
 const SingleBook = () => {
     const { id } = useParams(); 
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { user } = useAuthStore();
 
     useEffect(() => {
         const fetchSingleBook = async () => {
@@ -25,9 +27,43 @@ const SingleBook = () => {
         fetchSingleBook();
     }, [id]);
 
-    const handleAddToFavorites = () => {
-        console.log("Aggiunto ai preferiti:", book._id);
-        toast.success(`"${book.title}" aggiunto ai preferiti!`);
+    
+    const handleAddToFavorites = async () => {
+        // Ora "user" esiste ed è leggibile perché l'hai estratto in cima al componente
+        if (e && e.preventDefault) e.preventDefault();
+
+        if (!user) {
+            toast.error("Devi essere connesso per aggiungere un libro ai preferiti.");
+            return;
+        }
+
+        try {
+            // Chiamata al backend per salvare il preferito nel database
+            const response = await fetch(`http://localhost:5000/api/users/favorites/${book._id}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'include' // Essenziale per passare il token!
+            });
+            
+            const data = await response.json();
+
+            if (response.ok) {
+                // Mostra il toast "Aggiunto" o "Rimosso" inviato dal backend
+                toast.success(data.message);
+                
+                // Se siamo sulla pagina Preferiti, ricarichiamo per far sparire la card!
+                if (window.location.pathname === '/preferiti') {
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 500); // Aspetta mezzo secondo per far leggere il toast
+                }
+            } else {
+                toast.error(data.message || "Errore");
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Errore di connessione.");
+        }
     }
 
     if (loading) return <div className="text-white p-10 text-center">Caricamento dettagli...</div>;
@@ -63,6 +99,7 @@ const SingleBook = () => {
             </div>
         </div>
     )
+    
 }
 
 export default SingleBook;

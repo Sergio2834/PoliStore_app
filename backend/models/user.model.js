@@ -14,6 +14,11 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    //NUOVO CAMPO: Array di libri preferiti
+    favorites: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Book' // Collega questi ObjectId al modello Book
     }
 });
 

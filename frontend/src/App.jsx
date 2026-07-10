@@ -7,6 +7,9 @@ import { Route, Routes } from 'react-router'
 import {Toaster} from "react-hot-toast" //ovviamente ti basta fare npm intsall e installa automaticamente questo che serve per poi mostare il messaggio di accesso effettuato correttamente
 import { useAuthStore } from './store/authStore'
 import { useEffect } from 'react'
+import Preferiti from './pages/Preferiti';
+
+
 
 const App = () => {
   const {fetchUser, fetchingUser} = useAuthStore();
@@ -26,7 +29,7 @@ const App = () => {
         <Route path={"/libro/:id"} element={<SingleBook />} /> {/*route dinamica che mostra una pagina di libro specifico in base all'id passato nell'url*/}
         <Route path='/signup' element={<SignUp />} />
         <Route path='/signin' element={<SignIn />} />
-        <Route path='/carrello' element={<p>Questo è il carrello</p>} />
+        <Route path="/preferiti" element={<Preferiti />} />
       </Routes>
       
     </div>
