@@ -204,11 +204,15 @@ app.post("/api/users/favorites/:bookId", async (req, res) => {
         }
 
         // LOGICA INTERRUTTORE (TOGGLE)
-        if (user.favorites.includes(bookId)) {
+        const isAlreadyFav = user.favorites.some(id => id.toString() === bookId);
+        
+        if (isAlreadyFav) {
+            // Rimuovi il preferito
             user.favorites = user.favorites.filter(id => id.toString() !== bookId);
             await user.save();
             return res.status(200).json({ message: "Libro rimosso dai preferiti!" });
         } else {
+            // Aggiungi il preferito
             user.favorites.push(bookId);
             await user.save();
             return res.status(200).json({ message: "Libro aggiunto ai preferiti!" });

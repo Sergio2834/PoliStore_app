@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import { Swiper, SwiperSlide } from "swiper/react"; //importato lo slider da swiper.js : min 50:16 del video// 
+import "swiper/css";
 import BookCard from '../components/BookCard'; // Assicurati che il percorso sia corretto
 import { useAuthStore } from '../store/authStore';
 import { Navigate } from 'react-router'; // O 'react-router' a seconda della tua versione
+import axios from 'axios';
 
 const Preferiti = () => {
     const [favorites, setFavorites] = useState([]);
@@ -17,21 +20,8 @@ const Preferiti = () => {
     useEffect(() => {
         const fetchFavorites = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/users/favorites`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    credentials: 'include' // Essenziale per inviare il token
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    setFavorites(data);
-                } else {
-                    toast.error(data.message || "Impossibile caricare i preferiti");
-                }
+                const response = await axios.get(`http://localhost:5000/api/users/favorites`); 
+                setFavorites(response.data);
             } catch (error) {
                 console.error("Errore:", error);
                 toast.error("Errore di connessione.");
@@ -56,12 +46,13 @@ const Preferiti = () => {
                     <p className="text-xl">Non hai ancora aggiunto libri ai preferiti.</p>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <Swiper slidesPerView={"auto"} spaceBetween={20} className="mySwiper">
                     {favorites.map((book) => (
-                        // Riutilizziamo la tua card!
-                        <BookCard key={book._id} book={book} />
+                    <SwiperSlide key={book._id} className="max-w-[200px]">
+                        <BookCard book={book} />
+                    </SwiperSlide>
                     ))}
-                </div>
+                </Swiper>
             )}
         </div>
     );

@@ -4,6 +4,7 @@ import { useParams } from "react-router"
 import toast from 'react-hot-toast';
 import { getImgUrl } from '../utils/getImgUrl';
 import { useAuthStore } from '../store/authStore';
+import axios from 'axios';
 
 const SingleBook = () => {
     const { id } = useParams(); 
@@ -14,9 +15,8 @@ const SingleBook = () => {
     useEffect(() => {
         const fetchSingleBook = async () => {
             try {
-                const response = await fetch(`http://localhost:5000/api/books/${id}`);
-                const data = await response.json();
-                setBook(data);
+                const response = await axios.get(`http://localhost:5000/api/books/${id}`);
+                setBook(response.data);
                 setLoading(false);
             } catch (error) {
                 console.error("Errore nel recupero del libro:", error);
@@ -26,9 +26,8 @@ const SingleBook = () => {
 
         fetchSingleBook();
     }, [id]);
-
     
-    const handleAddToFavorites = async () => {
+    const handleAddToFavorites = async (e) => {
         // Ora "user" esiste ed è leggibile perché l'hai estratto in cima al componente
         if (e && e.preventDefault) e.preventDefault();
 
@@ -39,30 +38,16 @@ const SingleBook = () => {
 
         try {
             // Chiamata al backend per salvare il preferito nel database
-            const response = await fetch(`http://localhost:5000/api/users/favorites/${book._id}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                credentials: 'include' // Essenziale per passare il token!
-            });
-            
-            const data = await response.json();
-
-            if (response.ok) {
-                // Mostra il toast "Aggiunto" o "Rimosso" inviato dal backend
-                toast.success(data.message);
-                
-                // Se siamo sulla pagina Preferiti, ricarichiamo per far sparire la card!
-                if (window.location.pathname === '/preferiti') {
+            const response = await axios.post(`http://localhost:5000/api/users/favorites/${book._id}`);
+            toast.success(response.data.message);
+            if (window.location.pathname === '/preferiti') {
                     setTimeout(() => {
                         window.location.reload();
-                    }, 500); // Aspetta mezzo secondo per far leggere il toast
-                }
-            } else {
-                toast.error(data.message || "Errore");
-            }
+                    }, 500);}
         } catch (error) {
             console.error(error);
-            toast.error("Errore di connessione.");
+            const errorMessage = error.response.data.message || "Errore di connessione.";
+            toast.error(errorMessage);
         }
     }
 
@@ -89,11 +74,13 @@ const SingleBook = () => {
 
                     <button 
                         onClick={handleAddToFavorites} 
-                        className="bg-blue-600 hover:bg-blue-700 py-3 px-6 rounded-md flex w-fit items-center gap-2 transition-colors"
+                        className= "bg-blue-600 hover:bg-blue-700 py-3 px-6 rounded-md flex w-fit items-center gap-2 transition-colors cursor-pointer"
                     >
                         {/* TAG DELL'ICONA AGGIORNATO */}
-                        <Heart className="w-5 h-5" />
-                        <span>Aggiungi alla lista di lettura</span>
+                        <Heart className="w-5 h-5"/>
+                        <span>
+                           Lista di lettura
+                        </span>
                     </button>
                 </div>
             </div>
