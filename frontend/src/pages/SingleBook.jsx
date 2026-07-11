@@ -10,7 +10,8 @@ const SingleBook = () => {
     const { id } = useParams(); 
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
-    const { user } = useAuthStore();
+    const { user, setUser} = useAuthStore();
+    const [isFavorite, setIsFavorite] = useState(false);
 
     useEffect(() => {
         const fetchSingleBook = async () => {
@@ -26,6 +27,12 @@ const SingleBook = () => {
 
         fetchSingleBook();
     }, [id]);
+
+    useEffect(() => {
+        if (user && user.favorites && book) {
+            setIsFavorite(user.favorites.includes(book._id));
+        }
+    }, [user, book]);
     
     const handleAddToFavorites = async (e) => {
         // Ora "user" esiste ed è leggibile perché l'hai estratto in cima al componente
@@ -39,11 +46,14 @@ const SingleBook = () => {
         try {
             // Chiamata al backend per salvare il preferito nel database
             const response = await axios.post(`http://localhost:5000/api/users/favorites/${book._id}`);
+
+            setIsFavorite(!isFavorite); // Cambia lo stato istantaneamente
+            const updatedFavorites = isFavorite 
+                ? user.favorites.filter(favId => favId !== book._id) // Rimuovi se era preferito
+                : [...user.favorites, book._id];                     // Aggiungi se non lo era
+            
+            setUser({ ...user, favorites: updatedFavorites }); //AGGIORNA LO STATO GLOBALE --> fix bug
             toast.success(response.data.message);
-            if (window.location.pathname === '/preferiti') {
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 500);}
         } catch (error) {
             console.error(error);
             const errorMessage = error.response.data.message || "Errore di connessione.";
@@ -74,12 +84,12 @@ const SingleBook = () => {
 
                     <button 
                         onClick={handleAddToFavorites} 
-                        className= "bg-blue-600 hover:bg-blue-700 py-3 px-6 rounded-md flex w-fit items-center gap-2 transition-colors cursor-pointer"
+                        className={`${isFavorite ? 'bg-[#A53030] hover:bg-red-700' : 'bg-[#191970] hover:bg-blue-700'} py-3 px-6 rounded-md flex w-fit items-center gap-2 transition-colors`}
                     >
                         {/* TAG DELL'ICONA AGGIORNATO */}
-                        <Heart className="w-5 h-5"/>
+                        <Heart className="w-5 h-5" fill={isFavorite ? "currentColor" : "none"} />
                         <span>
-                           Lista di lettura
+                            {isFavorite ? 'Rimuovi dalla lista dei preferiti' : 'Aggiungi alla lista dei preferiti'}
                         </span>
                     </button>
                 </div>

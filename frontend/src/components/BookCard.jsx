@@ -56,14 +56,6 @@ const BookCard = ({ book }) => {
                 <p className="text-sm text-gray-400 mb-3 truncate">
                     {book?.author || 'Autore sconosciuto'}
                 </p>
-                
-                <button 
-                    onClick={handleAddToFavorites}
-                    className= "bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md flex items-center justify-center gap-2 transition-colors cursor-pointer" 
-                >
-                    <Heart className="w-5 h-5" /> 
-                    <span className="text-sm font-medium">Preferiti</span>
-                </button>
             </div>
         </div>
     )

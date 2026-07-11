@@ -29,29 +29,29 @@ const SignIn = () => {
        }}> {/*La logica flex serve per centrare il form, importa l'immagine di sfondo*/}
 
         
-        <div className='max-w-[450px] w-full bg-black bg-opacity-75 rounded px-8 py-14 mx-auto'>
-            <h1 className='text-3xl font-medium text-white mb-7'>Accesso</h1>
+        <div className='max-w-[450px] w-full bg-[#FAF0E6] bg-opacity-75 rounded px-8 py-14 mx-auto'>
+            <h1 className='text-3xl font-medium text-black mb-7'>Accesso</h1>
             <form onSubmit = {handleLogin} className='flex flex-col space-y-4'>
                 <input 
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)} 
                 placeholder="Mario Rossi" 
-                className='w-full h-[50px] bg-[#333] text-white rounded px-5 text-base'/> {/* onChange è un evento che si attiva ogni volta che il valore dell'input cambia; in questo caso, quando l'utente digita qualcosa nell'input, la funzione setUsername viene chiamata con il nuovo valore dell'input, aggiornando così lo stato username*/}
+                className='w-full h-[50px] bg-gray-300 text-black rounded px-5 text-base'/> {/* onChange è un evento che si attiva ogni volta che il valore dell'input cambia; in questo caso, quando l'utente digita qualcosa nell'input, la funzione setUsername viene chiamata con il nuovo valore dell'input, aggiornando così lo stato username*/}
 
                 <input 
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)} 
                 placeholder="Inserisci la tua password" 
-                className='w-full h-[50px] bg-[#333] text-white rounded px-5 text-base'/>
+                className='w-full h-[50px] bg-gray-300 text-black rounded px-5 text-base'/>
 
                 {error && <p className="text-red-500">{error}</p>}
 
                 <button 
                 type='submit'
                 disabled={isLoading} 
-                className='w-full bg-[#e50914] text-white py-2 rounded text-base hover:opacity-90 cursor-pointer'
+                className='w-full bg-[#191970] text-[#FAF0E6] py-2 rounded text-base hover:opacity-90 cursor-pointer'
                 >
                     Accedi
                 </button>
@@ -60,7 +60,7 @@ const SignIn = () => {
             <div className='mt-10 text-[#737373] text-sm'>
                 <p> Prima volta? 
                     <span onClick={() => navigate("/signup")} 
-                    className='text-white font-medium cursor-pointer ml-2 hover:underline'
+                    className='text-black font-medium cursor-pointer ml-2 hover:underline'
                     > {/*onClick è un evento che si attiva quando l'utente clicca sull'elemento; in questo caso, quando l'utente clicca sullo span, la funzione navigate viene chiamata con il percorso "/signup", portando così l'utente alla pagina di registrazione*/}
                         
                         Registrati adesso
