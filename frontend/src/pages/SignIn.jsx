@@ -25,7 +25,7 @@ const SignIn = () => {
      className="flex items-center justify-center min-h-[calc(100vh-80px)] bg-cover bg-center bg-no-repeat px-4 md:px-8 py-5"
       style={{
           backgroundImage: 
-          "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(/background_signin.jpg)",
+          "linear-gradient(rgba(255,250,240,0.3), rgba(255,250,240,0.3)), url(/background2.png)",
        }}> {/*La logica flex serve per centrare il form, importa l'immagine di sfondo*/}
 
         
@@ -36,14 +36,14 @@ const SignIn = () => {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)} 
-                placeholder="Mario Rossi" 
+                placeholder="Utente" 
                 className='w-full h-[50px] bg-gray-300 text-black rounded px-5 text-base'/> {/* onChange è un evento che si attiva ogni volta che il valore dell'input cambia; in questo caso, quando l'utente digita qualcosa nell'input, la funzione setUsername viene chiamata con il nuovo valore dell'input, aggiornando così lo stato username*/}
 
                 <input 
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)} 
-                placeholder="Inserisci la tua password" 
+                placeholder="Password" 
                 className='w-full h-[50px] bg-gray-300 text-black rounded px-5 text-base'/>
 
                 {error && <p className="text-red-500">{error}</p>}
