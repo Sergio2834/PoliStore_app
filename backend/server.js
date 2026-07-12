@@ -133,7 +133,13 @@ app.post("/api/logout", async (req, res) => {
 
 app.get("/api/books", async (req, res) => {
     try {
-        const books = await Book.find().sort({ createdAt: -1 });
+        const { search } = req.query; // Prende la parola cercata dall'URL
+        let query = {}; 
+        if (search) {
+            query = { title: { $regex: search, $options: "i" } };
+        }
+
+        const books = await Book.find(query).sort({ createdAt: -1 });
         res.status(200).json(books); 
     } catch (error) {
         console.error("Errore nel recupero dei libri", error);

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { Search, ShoppingCart, Heart, User, UserPlus, LogOut} from 'lucide-react'
 import Logo from "../assets/logo.png";
 import { useAuthStore } from '../store/authStore';
@@ -9,12 +9,31 @@ import {toast} from 'react-hot-toast';
 const Navbar = () => {
     const {user, logout} = useAuthStore();
     const [showMenu, setShowMenu] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const navigate = useNavigate();
+
     const avatarUrl = user 
     ? `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.username)}`: "";
+    
     const handleLogout = async () => {
         const {message} = await logout();
         toast.success(message);
         setShowMenu(false);
+    };
+
+    const handleSearch = (e) => {
+        // Controlla se il tasto premuto è Invio e se la ricerca non è vuota
+        if (e.key === 'Enter' && searchQuery.trim() !== "") {
+            navigate(`/cerca/${searchQuery}`);
+            setSearchQuery(""); // Svuota la barra dopo la ricerca
+        }
+    };
+
+    const handleIconClick = () => {
+        if (searchQuery.trim() !== "") {
+            navigate(`/cerca/${searchQuery}`);
+            setSearchQuery("");
+        }
     };
 
     return (
@@ -30,10 +49,14 @@ const Navbar = () => {
                 <div className="relative hidden md:inline-flex"> {/*relative necessario per sovrapporre l'icona di ricerca all'input di testo; space-x-4 aggiunge uno spazio orizzontale di 1rem tra gli elementi; di default nasconde il div e lo mostra solo su schermi medi*/}
                     <input 
                         type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        onKeyDown={handleSearch}
                         className="bg-[#FAF0E6] px-4 py-2 rounded-full min-w-72 pr-10 outline-none" /*rounded-full rende l'input completamente arrotondato; min-w-72 imposta una larghezza minima di 18rem; pr-10 aggiunge un padding a destra di 2.5rem per fare spazio all'icona di ricerca; outline-none rimuove il bordo di focus predefinito*/
                         placeholder='Cerca...' />
-                    <Search className="absolute top-2 right-4 w-5 h-5" /> {/*posizione assoluta per sovrapporre l'icona all'input; top-2 posiziona l'icona a 0.5rem dall'alto; right-4 posiziona l'icona a 1rem da destra; w-5 e h-5 impostano la larghezza e l'altezza dell'icona a 1.25rem*/}
-                
+                    <Search className="absolute top-2 right-4 w-5 h-5"
+                        onClick={handleIconClick} // Cliccabile anche l'icona
+                        className="absolute top-2 right-4 w-5 h-5 cursor-pointer" />  
                 </div>
                 
                 {user ? (<Link to={"/preferiti"}> {/*Apre una nuova pagina quando si clicca sul pulsante del carrello*/}
