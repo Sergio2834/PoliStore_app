@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router'
 import { Search, ShoppingCart, Heart, User, UserPlus, LogOut} from 'lucide-react'
-import Logo from "../assets/logo.png";
+import Logo from "../assets/logo2.png";
 import { useAuthStore } from '../store/authStore';
 import { useState } from 'react';
 import {toast} from 'react-hot-toast';
