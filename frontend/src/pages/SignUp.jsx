@@ -29,44 +29,44 @@ const SignUp = () => {
     <div 
      className="flex items-center justify-center min-h-[calc(100vh-80px)] bg-cover bg-center bg-no-repeat px-4 md:px-8 py-5" 
       style={{
-          backgroundImage: "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(/background_signin.jpg)",
+          backgroundImage: "linear-gradient(rgba(255,250,240,0.3), rgba(255,250,240,0.3)), url(/background2.png)",
        }}> {/*La logica flex serve per centrare il form*/}
 
         
-        <div className='max-w-[450px] w-full bg-black bg-opacity-75 rounded px-8 py-14 mx-auto'>
-            <h1 className='text-3xl font-medium text-white mb-7'>Registrazione</h1>
+        <div className='max-w-[450px] w-full bg-[#FAF0E6] bg-opacity-75 rounded px-8 py-14 mx-auto'>
+            <h1 className='text-3xl font-medium text-black mb-7'>Registrazione</h1>
             <form onSubmit={handleSignUp} className='flex flex-col space-y-4'>
                 <input 
                   type="text" 
                   value={username} onChange={(e) => setUsername(e.target.value)}  
-                  placeholder="Mario Rossi" 
-                  className='w-full h-[50px] bg-[#333] text-white rounded px-5 text-base'/> {/* onChange è un evento che si attiva ogni volta che il valore dell'input cambia; in questo caso, quando l'utente digita qualcosa nell'input, la funzione setUsername viene chiamata con il nuovo valore dell'input, aggiornando così lo stato username*/}
+                  placeholder="Utente" 
+                  className='w-full h-[50px] bg-gray-300 text-black rounded px-5 text-base'/> {/* onChange è un evento che si attiva ogni volta che il valore dell'input cambia; in questo caso, quando l'utente digita qualcosa nell'input, la funzione setUsername viene chiamata con il nuovo valore dell'input, aggiornando così lo stato username*/}
 
                 <input 
                   type="email" 
                   value={email} onChange={(e) => setEmail(e.target.value)} 
-                  placeholder="mariorossi@gmail.com" 
-                  className='w-full h-[50px] bg-[#333] text-white rounded px-5 text-base'/>
+                  placeholder="Email" 
+                  className='w-full h-[50px] bg-gray-300 text-black rounded px-5 text-base'/>
 
                 <input 
                   type="password" 
                   value={password} onChange={(e) => setPassword(e.target.value)} 
-                  placeholder="Inserisci la tua password" 
-                  className='w-full h-[50px] bg-[#333] text-white rounded px-5 text-base'/>
+                  placeholder="Password" 
+                  className='w-full h-[50px] bg-gray-300 text-black rounded px-5 text-base'/>
 
-                  {error && <p className='text-red-500'>{error}</p>} //se c'è un errore, viene mostrato un messaggio di errore sotto il form; error è lo stato che contiene eventuali messaggi di errore dello store//
+                  {error && <p className='text-red-500'>{error}</p>}
 
                 <button 
                   type='submit'
                   disabled={isLoading} //disabilita il pulsante quando isLoading è true, impedendo all'utente di inviare più volte il form mentre la richiesta è in corso// 
-                  className='w-full bg-[#e50914] text-white py-2 rounded text-base hover:opacity-90 cursor pointer'
+                  className='w-full bg-[#191970] text-[#FAF0E6] py-2 rounded text-base hover:opacity-90 cursor pointer'
                   >
                     Registrati
                 </button>
             </form>
 
             <div className='mt-10 text-[#737373] text-sm'>
-                <p> Hai già un account? <span onClick={() => navigate("/signin")} className='text-white font-medium cursor-pointer ml-2 hover:underline'>Accedi</span> </p>
+                <p> Hai già un account? <span onClick={() => navigate("/signin")} className='text-black font-medium cursor-pointer ml-2 hover:underline'>Accedi</span> </p>
             </div>
         </div>
     </div>

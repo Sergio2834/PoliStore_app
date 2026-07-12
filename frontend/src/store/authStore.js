@@ -105,7 +105,9 @@ export const useAuthStore = create((set) => ({ //useAuthStore è un hook che per
 
       throw error;
     }
-  }
+    },
+
+    setUser: (userData) => set({ user: userData })
 
 
 }));
