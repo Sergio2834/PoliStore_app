@@ -25,7 +25,7 @@ const Homepage = () => {
 
         fetchBooks();
     }, []);
-    if (loading) return <div className='text-white p-5 text-center mt-10'>Caricamento libri...</div>;
+    if (loading) return <div className='text-black p-5 text-center mt-10'>Caricamento libri...</div>;
 
     // Estraiamo tutte le categorie uniche dai libri ricevuti
     // Se un libro non ha categoria, lo mettiamo in "Generale"

@@ -1,6 +1,9 @@
-import { ShoppingCart, Wallet } from 'lucide-react'
+import { ShoppingCart, Wallet, Heart, Link2, BookOpenCheck, BookSearch, UserPlus } from 'lucide-react'
 import bannerImg from '../assets/banner.png' //importa immagini dalla cartella asset, ho fatto una prova fast col piccolo principe//
+import { useAuthStore } from '../store/authStore';
+import { Link } from 'react-router';
 const Hero = () => {
+    const {user} = useAuthStore();
    return (
     <div className='flex flex-col md:flex-row-reverse py-16 justify-between items-center gap-12'>
          <div className='md:w-1/2 w-full flex items-center md:justify-end'>
@@ -8,12 +11,34 @@ const Hero = () => {
         </div>
         
         <div className='md:w-1/2 w-full'>
-            <h1 className='md:text-5xl text-2xl font-medium mb-7'>New Releases This Week</h1>
-            <p className='mb-10'>It's time to update your reading list with some of the latest and greatest releases in the literary world. From heart-pumping thrillers to captivating memoirs, this week's new releases offer something for everyone</p>
+            <h1 className='md:text-4xl text-2xl font-medium mb-7'>{user ? `Benvenuto, ${user.username}` : "Tieni traccia dei tuoi libri preferiti"}</h1>
+            <ul className='flex flex-col gap-2 mb-10'>
+                <li className='flex items-center gap-2'>
+                    <Heart className='w-6 h-6' /> 
+                    <span className='text-lg'>Aggiungi facilmente dei libri ai tuoi preferiti</span>
+                </li>
+                <li className='flex items-center gap-2'>
+                    <Link2 className='w-6 h-6' /> 
+                    <span className='text-lg'>Link diretto all'acquisto del libro</span>
+                </li>
+                <li className='flex items-center gap-2'>
+                    <BookOpenCheck className='w-6 h-6' /> 
+                    <span className='text-lg'>Leggi la trama di nuovi libri con un solo click</span>
+                </li>
+                <li className='flex items-center gap-2'>
+                    <BookSearch className='w-6 h-6' /> 
+                    <span className='text-lg'>Trova facilmente libri digitando, anche solo in parte, il suo nome</span>
+                </li>
+            </ul>
 
             <div className='flex flex-wrap gap-4'>
-                <button className='flex justify-center items-center bg-black hover:bg-gray-200 text-[#e50000] py-3 px-4 rounded-full cursor-pointer text-sm md:text-base'><Wallet className="mr-2 w-4 h-5 md:w-5 md:h-5" />Acquista ora</button> {/*aggiungi un pulsante con scritto "Acquista ora" e uno con "Metti nel carrello", con icone prese da Lucid react*/}
-                <button className='flex justify-center items-center bg-white text-black py-3 px-4 rounded-full cursor-pointer text-sm md:text-base'><ShoppingCart className="mr-2 w-4 h-5 md:w-5 md:h-5" />Metti nel carrello</button>
+                {!user && (
+                    <Link to={"/signup"}>
+                        <button className='flex justify-center items-center bg-[#191970] hover:bg-blue-700 text-white py-3 px-4 rounded-full cursor-pointer text-sm md:text-base'>
+                            <UserPlus className="mr-2 w-4 h-5 md:w-5 md:h-5" />CREA UN ACCOUNT GRATUITAMENTE
+                        </button>
+                    </Link>)
+                }
             </div>
         </div>
 
@@ -22,4 +47,4 @@ const Hero = () => {
   )
 }
     
-export default Hero //da vedere l'altro video min 1:30:00 https://youtu.be/pgw2KPfgK1E //
+export default Hero
