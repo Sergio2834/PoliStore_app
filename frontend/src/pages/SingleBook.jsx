@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, ShoppingCart, Download, ChevronDown, ChevronUp } from 'lucide-react';
+import { Heart, ShoppingCart, Download, ChevronDown, ChevronUp, Eye } from 'lucide-react';
 import { useParams } from "react-router"
 import toast from 'react-hot-toast';
 import { getImgUrl } from '../utils/getImgUrl';
 import { useAuthStore } from '../store/authStore';
 import axios from 'axios';
+import { io } from 'socket.io-client';
 
 const SingleBook = () => {
     const { id } = useParams(); 
@@ -14,6 +15,8 @@ const SingleBook = () => {
     const [isFavorite, setIsFavorite] = useState(false);
 
     const [isExpanded, setIsExpanded] = useState(false);
+
+    const [viewers, setViewers] = useState(1);
 
     useEffect(() => {
         const fetchSingleBook = async () => {
@@ -29,6 +32,28 @@ const SingleBook = () => {
 
         fetchSingleBook();
     }, [id]);
+
+    useEffect(() => {
+        // Avviamo il socket solo se il libro è stato caricato correttamente
+        if (!book) return;
+
+        // Inizializza la connessione socket col server
+        const socket = io('http://localhost:5000');
+
+        // Entra nella stanza specifica di questo libro
+        socket.emit('join-book', book._id);
+
+        // Mettiti in ascolto degli aggiornamenti dal server
+        socket.on('viewers-count', (count) => {
+            setViewers(count);
+        });
+
+        // Cleanup: quando esci dalla pagina o il componente viene smontato
+        return () => {
+            socket.emit('leave-book', book._id);
+            socket.disconnect();
+        };
+    }, [book]);
 
     useEffect(() => {
         if (user && user.favorites && book) {
@@ -79,6 +104,14 @@ const SingleBook = () => {
         <div className="max-w-6xl mx-auto p-6 md:p-8 mt-6">
             <h1 className="text-4xl md:text-5xl font-bold mb-10 text-[#191970]">{book.title}</h1>
 
+            {/* NUOVO ELEMENTO UI: Contatore visualizzazioni sotto al titolo */}
+            <div className="flex items-center gap-2 text-gray-500 font-medium mb-10">
+                <Eye className="w-5 h-5 text-green-600 animate-pulse" />
+                <span>
+                    {viewers} {viewers === 1 ? 'persona sta' : 'persone stanno'} guardando questo libro
+                </span>
+            </div>
+            
             <div className='flex flex-col md:flex-row gap-12'>
                 <div className="w-full md:w-1/3 lg:w-1/4 flex flex-col gap-6"> {/*colonna di sinistra*/}
                     <img

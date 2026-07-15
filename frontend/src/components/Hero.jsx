@@ -1,4 +1,4 @@
-import { ShoppingCart, Wallet, Heart, Link2, Download, BookSearch, UserPlus } from 'lucide-react'
+import { ShoppingCart, Wallet, Heart, Link2, Download, BookSearch, UserPlus, Eye } from 'lucide-react'
 import bannerImg from '../assets/banner.png' //importa immagini dalla cartella asset, ho fatto una prova fast col piccolo principe//
 import { useAuthStore } from '../store/authStore';
 import { Link } from 'react-router';
@@ -27,7 +27,11 @@ const Hero = () => {
                 </li>
                 <li className='flex items-center gap-2'>
                     <BookSearch className='w-6 h-6' /> 
-                    <span className='text-lg'>Trova facilmente libri digitando, anche solo in parte, il suo nome</span>
+                    <span className='text-lg'>Trova facilmente libri digitando, anche solo in parte, il loro nome</span>
+                </li>
+                <li className='flex items-center gap-2'>
+                    <Eye className='w-6 h-6' /> 
+                    <span className='text-lg'>Tieni traccia degli studenti che osservano il tuo stesso libro</span>
                 </li>
             </ul>
 
