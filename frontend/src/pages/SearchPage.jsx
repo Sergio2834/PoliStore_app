@@ -12,8 +12,7 @@ const SearchPage = () => {
         const fetchSearchResults = async () => {
             setLoading(true);
             try {
-                // Facciamo la chiamata alla nostra rotta appena modificata
-                const response = await axios.get(`http://localhost:5000/api/books?search=${query}`);
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/books?search=${query}`);
                 setBooks(response.data);
             } catch (error) {
                 console.error("Errore nella ricerca:", error);

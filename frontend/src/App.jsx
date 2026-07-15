@@ -27,7 +27,7 @@ const App = () => {
       
       <Routes>
         <Route path={"/"} element={<Homepage />} />
-        <Route path={"/libro/:id"} element={<SingleBook />} /> {/*route dinamica che mostra una pagina di libro specifico in base all'id passato nell'url*/}
+        <Route path={"/libro/:id"} element={<SingleBook />} />
         <Route path={"/cerca/:query"} element={<SearchPage />} />
         <Route path='/signup' element={<SignUp />} />
         <Route path='/signin' element={<SignIn />} />

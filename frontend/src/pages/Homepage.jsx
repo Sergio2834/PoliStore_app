@@ -12,8 +12,7 @@ const Homepage = () => {
     useEffect(() => {
         const fetchBooks = async () => {
             try {
-                // Assicurati che l'URL punti al tuo backend (porta 5000)
-                const response = await fetch('http://localhost:5000/api/books');
+                const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/books`);
                 const data = await response.json();
                 setBooks(data);
                 setLoading(false);
@@ -28,7 +27,6 @@ const Homepage = () => {
     if (loading) return <div className='text-black p-5 text-center mt-10'>Caricamento libri...</div>;
 
     // Estraiamo tutte le categorie uniche dai libri ricevuti
-    // Se un libro non ha categoria, lo mettiamo in "Generale"
     const categories = [...new Set(books.map(book => book.category || 'Generale'))];
 
     return (
@@ -48,7 +46,6 @@ const Homepage = () => {
                     />
                 );
             })}
-
             <Footer />
         </div>
     )

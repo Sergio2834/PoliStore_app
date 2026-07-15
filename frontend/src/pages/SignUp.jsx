@@ -5,21 +5,20 @@ import { useAuthStore } from '../store/authStore'; //useAuthStore è un hook che
 
 const SignUp = () => {
    const navigate = useNavigate(); //Ti porta da Signin a Signup e viceversa//
-   const [username, setUsername] = useState("") //useState è un hook che permette di creare uno stato locale all'interno di un componente funzionale; in questo caso, username è lo stato che contiene il valore dell'input e setUsername è la funzione che permette di aggiornare questo stato; inizialmente, lo stato è una stringa vuota//
+   const [username, setUsername] = useState("")
    const [email, setEmail] = useState("")
    const [password, setPassword] = useState("")
-   const {signup, isLoading, error} = useAuthStore() //useAuthStore è un hook che permette di accedere allo store; in questo caso, stiamo estraendo le funzioni signup, isLoading e error dallo store//
+   const {signup, isLoading, error} = useAuthStore()
    
    const handleSignUp = async (e) => {
-    e.preventDefault() //previene il comportamento predefinito del form, che è quello di ricaricare la pagina quando viene inviato; in questo modo, possiamo gestire l'invio del form in modo personalizzato senza dover ricaricare la pagina//
+    e.preventDefault() //previene il comportamento predefinito del form, che è quello di ricaricare la pagina quando viene inviato;
     
     try {
-      await signup(username, email, password) //chiama la funzione signup dello store passando come argomenti i valori degli input; questa funzione fa una richiesta al server per registrare un nuovo utente e aggiorna lo stato dello store con le informazioni dell'utente e eventuali messaggi di errore o successo//
+      await signup(username, email, password) //chiama la funzione signup dello store passando come argomenti i valori degli input;
       navigate("/");
 
     }catch (error) {
       console.log(error);
-
     }
    }
    
@@ -30,7 +29,7 @@ const SignUp = () => {
      className="flex items-center justify-center min-h-[calc(100vh-80px)] bg-cover bg-center bg-no-repeat px-4 md:px-8 py-5" 
       style={{
           backgroundImage: "linear-gradient(rgba(255,250,240,0.3), rgba(255,250,240,0.3)), url(/background2.png)",
-       }}> {/*La logica flex serve per centrare il form*/}
+       }}>
 
         
         <div className='max-w-[450px] w-full bg-[#FAF0E6] bg-opacity-75 rounded px-8 py-14 mx-auto'>
@@ -40,7 +39,7 @@ const SignUp = () => {
                   type="text" 
                   value={username} onChange={(e) => setUsername(e.target.value)}  
                   placeholder="Utente" 
-                  className='w-full h-[50px] bg-gray-300 text-black rounded px-5 text-base'/> {/* onChange è un evento che si attiva ogni volta che il valore dell'input cambia; in questo caso, quando l'utente digita qualcosa nell'input, la funzione setUsername viene chiamata con il nuovo valore dell'input, aggiornando così lo stato username*/}
+                  className='w-full h-[50px] bg-gray-300 text-black rounded px-5 text-base'/>
 
                 <input 
                   type="email" 
@@ -58,7 +57,7 @@ const SignUp = () => {
 
                 <button 
                   type='submit'
-                  disabled={isLoading} //disabilita il pulsante quando isLoading è true, impedendo all'utente di inviare più volte il form mentre la richiesta è in corso// 
+                  disabled={isLoading} //disabilita il pulsante quando isLoading è true, impedendo all'utente di inviare più volte il form mentre la richiesta è in corso
                   className='w-full bg-[#191970] text-[#FAF0E6] py-2 rounded text-base hover:opacity-90 cursor-pointer'
                   >
                     Registrati

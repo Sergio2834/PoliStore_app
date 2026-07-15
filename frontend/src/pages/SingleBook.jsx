@@ -21,7 +21,7 @@ const SingleBook = () => {
     useEffect(() => {
         const fetchSingleBook = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/books/${id}`);
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/books/${id}`);
                 setBook(response.data);
                 setLoading(false);
             } catch (error) {
@@ -38,7 +38,7 @@ const SingleBook = () => {
         if (!book) return;
 
         // Inizializza la connessione socket col server
-        const socket = io('http://localhost:5000');
+        const socket = io(import.meta.env.VITE_BACKEND_URL);
 
         // Entra nella stanza specifica di questo libro
         socket.emit('join-book', book._id);
@@ -78,13 +78,12 @@ const SingleBook = () => {
         }
 
         try {
-            // Chiamata al backend per salvare il preferito nel database
-            const response = await axios.post(`http://localhost:5000/api/users/favorites/${book._id}`);
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/favorites/${book._id}`);
 
-            setIsFavorite(!isFavorite); // Cambia lo stato istantaneamente
+            setIsFavorite(!isFavorite);
             const updatedFavorites = isFavorite 
-                ? user.favorites.filter(favId => favId !== book._id) // Rimuovi se era preferito
-                : [...user.favorites, book._id];                     // Aggiungi se non lo era
+                ? user.favorites.filter(favId => favId !== book._id)
+                : [...user.favorites, book._id];
             
             setUser({ ...user, favorites: updatedFavorites }); //AGGIORNA LO STATO GLOBALE --> fix bug
             toast.success(response.data.message);
@@ -104,7 +103,6 @@ const SingleBook = () => {
         <div className="max-w-6xl mx-auto p-6 md:p-8 mt-6">
             <h1 className="text-4xl md:text-5xl font-bold mb-10 text-[#191970]">{book.title}</h1>
 
-            {/* NUOVO ELEMENTO UI: Contatore visualizzazioni sotto al titolo */}
             <div className="flex items-center gap-2 text-gray-500 font-medium mb-10">
                 <Eye className="w-5 h-5 text-green-600 animate-pulse" />
                 <span>

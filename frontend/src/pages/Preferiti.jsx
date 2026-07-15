@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
-import { Swiper, SwiperSlide } from "swiper/react"; //importato lo slider da swiper.js : min 50:16 del video// 
+import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import BookCard from '../components/BookCard';
 import { useAuthStore } from '../store/authStore';
@@ -14,19 +14,16 @@ const Preferiti = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Se non stiamo più caricando i dati utente e l'utente è null, allora lo reindirizziamo
         if (!fetchingUser && !user) {
             navigate("/");
         }
     }, [user, fetchingUser, navigate]);
 
-    
-
     useEffect(() => {
         if (!user) return;
         const fetchFavorites = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/users/favorites`); 
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/users/favorites`); 
                 setFavorites(response.data);
             } catch (error) {
                 console.error("Errore:", error);
@@ -35,7 +32,6 @@ const Preferiti = () => {
                 setLoading(false);
             }
         };
-
         fetchFavorites();
     }, [user]);
 

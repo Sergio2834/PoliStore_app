@@ -1,4 +1,4 @@
-import mongoose from "mongoose"; //installa mongoose con npm install mongoose prima di eseguire questo codice//
+import mongoose from "mongoose";
 
 export async function connectToDB() {
     try {
