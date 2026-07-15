@@ -96,7 +96,7 @@ app.post("/api/signup", async (req, res) => {
             res.cookie("token", token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
-                sameSite: "strict",
+                sameSite: "none", //con strict il deployment con Render non funzionava
             });
         } 
         return res.status(200).json({user: userDoc, message: "Utente creato correttamente!"})
@@ -126,7 +126,7 @@ app.post("/api/login", async (req, res) => {
             res.cookie("token", token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
-                sameSite: "strict",
+                sameSite: "none",
             });
         } 
         return res.status(200).json({user: userDoc, message: "Accesso effettuato correttamente!"})

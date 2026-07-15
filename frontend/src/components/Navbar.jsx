@@ -43,11 +43,11 @@ const Navbar = () => {
         allinea al centro verticalmente tutti gli elementi padding cioè spaziatura interna sui 4 lati pari a 1rem cioè 16px; altezza di 20; dimensione font 14px e 15px a partire da schermi medi; font medium; text-nowrap impedisce che il testo vada a capo*/}
             
             <Link to={"/"} className="flex items-center gap-3">
-                <img src={Logo} alt="Logo" className="h-16 w-auto cursor-pointer brightness-125" /> {/*imposta la larghezza a 96px, cambia il cursore in pointer quando si passa sopra e aumenta la luminosità del logo del 25%*/}
-                <img src={ScrittaLogo} alt="PoliStore" className="h-6 w-auto cursor-pointer"/>
+                <img src={Logo} alt="Logo" className="h-12 md:h-16 w-auto cursor-pointer brightness-125" /> {/*imposta la larghezza a 96px, cambia il cursore in pointer quando si passa sopra e aumenta la luminosità del logo del 25%*/}
+                <img src={ScrittaLogo} alt="PoliStore" className="h-5 w-auto cursor-pointer hidden sm:inline"/>
             </Link> 
             
-            <div className="flex items-center space-x-4 relative"> 
+            <div className="flex items-center space-x-2 md:space-x-4 relative"> 
                 <div className="relative hidden md:inline-flex"> {/*relative necessario per sovrapporre l'icona di ricerca all'input di testo; space-x-4 aggiunge uno spazio orizzontale di 1rem tra gli elementi; di default nasconde il div e lo mostra solo su schermi medi*/}
                     <input 
                         type="text"
@@ -63,11 +63,13 @@ const Navbar = () => {
                 
                 {user ? (<Link to={"/preferiti"}> {/*Apre una nuova pagina quando si clicca sul pulsante del carrello*/}
                 <button className='flex justify-center items-center h-9 bg-[#FAF0E6] text-black py-3 px-4 rounded-full cursor-pointer text-sm md:text-base'>
-                    <Heart className="mr-2 w-4 h-5 md:w-5 md:h-5" />Preferiti
+                    <Heart className=" w-5 h-5 md:mr-2" />
+                    <span className="hidden md:inline">Preferiti</span>
                 </button>
                 </Link>) : (<Link to={"/signup"}> {/*Apre una nuova pagina quando si clicca sul pulsante di accesso*/}
                 <button className='flex justify-center items-center h-9 bg-[#FAF0E6] text-black py-3 px-4 rounded-full cursor-pointer text-sm md:text-base'>
-                    <UserPlus className="mr-2 w-4 h-5 md:w-5 md:h-5" />Registrati
+                    <UserPlus className="w-5 h-5 md:mr-2" />
+                    <span className="hidden md:inline">Registrati</span>
                 </button>
                 </Link> )}
                 
