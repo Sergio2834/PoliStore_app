@@ -4,16 +4,16 @@ import {useAuthStore} from "../store/authStore";
 import toast from 'react-hot-toast';
 
 const SignIn = () => {
-     const navigate = useNavigate(); //Ti porta da Signin a Signup e viceversa//
+     const navigate = useNavigate(); //Ti porta da Signin a Signup e viceversa
      const [username, setUsername] = useState("");
-     const [password, setPassword] = useState(""); //useState è un hook che permette di creare uno stato locale all'interno di un componente funzionale; in questo caso, username è lo stato che contiene il valore dell'input e setUsername è la funzione che permette di aggiornare questo stato; inizialmente, lo stato è una stringa vuota//
+     const [password, setPassword] = useState(""); //username è lo stato che contiene il valore dell'input e setUsername è la funzione che permette di aggiornare questo stato;
      const {login, isLoading, error} = useAuthStore();
      
      const handleLogin = async (e) => {
         e.preventDefault();
         try{
-            const {message} = await login(username, password) //estraiamo il messaggio di login avvenuto correttamente
-            toast.success(message); //mostra il messaggio di login avvenuto correttamente estratto alla riga prima 
+            const {message} = await login(username, password)
+            toast.success(message);
             navigate("/")
         } catch(error){
             console.log(error)
@@ -26,7 +26,7 @@ const SignIn = () => {
       style={{
           backgroundImage: 
           "linear-gradient(rgba(255,250,240,0.3), rgba(255,250,240,0.3)), url(/background2.png)",
-       }}> {/*La logica flex serve per centrare il form, importa l'immagine di sfondo*/}
+       }}>
 
         
         <div className='max-w-[450px] w-full bg-[#FAF0E6] bg-opacity-75 rounded px-8 py-14 mx-auto'>
@@ -37,7 +37,7 @@ const SignIn = () => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)} 
                 placeholder="Utente" 
-                className='w-full h-[50px] bg-gray-300 text-black rounded px-5 text-base'/> {/* onChange è un evento che si attiva ogni volta che il valore dell'input cambia; in questo caso, quando l'utente digita qualcosa nell'input, la funzione setUsername viene chiamata con il nuovo valore dell'input, aggiornando così lo stato username*/}
+                className='w-full h-[50px] bg-gray-300 text-black rounded px-5 text-base'/>
 
                 <input 
                 type="password"
@@ -61,7 +61,7 @@ const SignIn = () => {
                 <p> Prima volta? 
                     <span onClick={() => navigate("/signup")} 
                     className='text-black font-medium cursor-pointer ml-2 hover:underline'
-                    > {/*onClick è un evento che si attiva quando l'utente clicca sull'elemento; in questo caso, quando l'utente clicca sullo span, la funzione navigate viene chiamata con il percorso "/signup", portando così l'utente alla pagina di registrazione*/}
+                    >
                         
                         Registrati adesso
                     </span> 

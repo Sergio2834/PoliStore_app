@@ -2,8 +2,8 @@
 @import "tailwindcss";
 
 * {
-  font-family: 'Merriweather', sans-serif; /* Cambiato font e impostato per tutti, se non disponibile userà sans-serif*/ 
+  font-family: 'Merriweather', sans-serif; 
 }
 body {
-  background-color: #FAF0E6; /* Cambiato colore sfondo*/
+  background-color: #FAF0E6;
 }

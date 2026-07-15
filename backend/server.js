@@ -1,6 +1,3 @@
-//Installa l'estensione Postman per testare il backend senza andare sul browser (min 2:57:10)//
-//Installa nodemon (npm install -g (non so perchè a me è servito fare -g) nodemon) per far si che il server si riavvii automaticamente ogni volta che fai una modifica al codice (min 2:58:00)//
-
 import express from 'express'; 
 import { connectToDB } from './config/db.js'; 
 import dotenv from 'dotenv'; 
@@ -21,7 +18,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: process.env.CLIENT_URL, // Assicurati che questo combaci col frontend (es. http://localhost:5173)
+        origin: process.env.CLIENT_URL,
         credentials: true
     }
 });
@@ -64,10 +61,6 @@ io.on('connection', (socket) => {
             }
         }
     });
-});
-
-app.get("/", (req, res) => {
-    res.send("Sergio gay 4!")
 });
 
 // --- ROTTE AUTENTICAZIONE ---

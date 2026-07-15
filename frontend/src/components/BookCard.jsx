@@ -22,7 +22,7 @@ const BookCard = ({ book }) => {
 
         try {
             // 4. Chiamata al backend
-            const response = await axios.post(`http://localhost:5000/api/users/favorites/${book._id}`)
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/favorites/${book._id}`)
             toast.success(response.data.message);
             // Se siamo sulla pagina Preferiti, ricarichiamo per far sparire la card!
             if (window.location.pathname === '/preferiti') {
