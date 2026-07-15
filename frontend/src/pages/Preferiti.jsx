@@ -46,8 +46,8 @@ const Preferiti = () => {
     if (!user) return null;
 
     return (
-        <div className="max-w-7xl mx-auto p-5 text-black mt-10">
-            <h1 className="text-3xl font-bold mb-8">La tua Lista di Lettura</h1>
+        <div className="max-w-7xl mx-auto p-5 text-[#191970] mt-10">
+            <h1 className="text-3xl font-bold mb-8">I tuoi preferiti</h1>
             
             {favorites.length === 0 ? (
                 <div className="text-center text-gray-500 mt-10">

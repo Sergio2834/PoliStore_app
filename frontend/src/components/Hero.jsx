@@ -1,4 +1,4 @@
-import { ShoppingCart, Wallet, Heart, Link2, BookOpenCheck, BookSearch, UserPlus } from 'lucide-react'
+import { ShoppingCart, Wallet, Heart, Link2, Download, BookSearch, UserPlus } from 'lucide-react'
 import bannerImg from '../assets/banner.png' //importa immagini dalla cartella asset, ho fatto una prova fast col piccolo principe//
 import { useAuthStore } from '../store/authStore';
 import { Link } from 'react-router';
@@ -11,19 +11,19 @@ const Hero = () => {
         </div>
         
         <div className='md:w-1/2 w-full'>
-            <h1 className='md:text-4xl text-2xl font-medium mb-7'>{user ? `Benvenuto, ${user.username}` : "Tieni traccia dei tuoi libri preferiti"}</h1>
+            <h1 className="text-4xl md:text-4xl font-bold mb-10 text-[#191970]">{user ? `Benvenuto, ${user.username}` : "I tuoi libri universitari a portata di mano"}</h1>
             <ul className='flex flex-col gap-2 mb-10'>
                 <li className='flex items-center gap-2'>
                     <Heart className='w-6 h-6' /> 
-                    <span className='text-lg'>Aggiungi facilmente dei libri ai tuoi preferiti</span>
+                    <span className='text-lg'>Aggiungi ai preferiti i libri dei tuoi prossimi esami</span>
                 </li>
                 <li className='flex items-center gap-2'>
                     <Link2 className='w-6 h-6' /> 
                     <span className='text-lg'>Link diretto all'acquisto del libro</span>
                 </li>
                 <li className='flex items-center gap-2'>
-                    <BookOpenCheck className='w-6 h-6' /> 
-                    <span className='text-lg'>Leggi la trama di nuovi libri con un solo click</span>
+                    <Download className='w-6 h-6' /> 
+                    <span className='text-lg'>PDF scaricabile a portata di mano</span>
                 </li>
                 <li className='flex items-center gap-2'>
                     <BookSearch className='w-6 h-6' /> 
