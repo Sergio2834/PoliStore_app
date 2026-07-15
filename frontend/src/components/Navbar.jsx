@@ -2,6 +2,7 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router'
 import { Search, ShoppingCart, Heart, User, UserPlus, LogOut} from 'lucide-react'
 import Logo from "../assets/logo.png";
+import ScrittaLogo from "../assets/scritta_logo.png"
 import { useAuthStore } from '../store/authStore';
 import { useState } from 'react';
 import {toast} from 'react-hot-toast';
@@ -41,8 +42,9 @@ const Navbar = () => {
         {/*sfondo nero e testo grigio chiaro; justify between distribuisce lo spazio mettendo il primo elemento tutto a sinistra e l'ultimo tutto a destra; 
         allinea al centro verticalmente tutti gli elementi padding cioè spaziatura interna sui 4 lati pari a 1rem cioè 16px; altezza di 20; dimensione font 14px e 15px a partire da schermi medi; font medium; text-nowrap impedisce che il testo vada a capo*/}
             
-            <Link to={"/"}>
-            <img src={Logo} alt="Logo" className="w-24 cursor-pointer brightness-125" /> {/*imposta la larghezza a 96px, cambia il cursore in pointer quando si passa sopra e aumenta la luminosità del logo del 25%*/}
+            <Link to={"/"} className="flex items-center gap-3">
+                <img src={Logo} alt="Logo" className="h-16 w-auto cursor-pointer brightness-125" /> {/*imposta la larghezza a 96px, cambia il cursore in pointer quando si passa sopra e aumenta la luminosità del logo del 25%*/}
+                <img src={ScrittaLogo} alt="PoliStore" className="h-6 w-auto cursor-pointer"/>
             </Link> 
             
             <div className="flex items-center space-x-4 relative"> 
