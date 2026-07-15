@@ -43,7 +43,8 @@ const BookCard = ({ book }) => {
                 <img
                     src={getImgUrl(book?.coverImage)}
                     alt={book?.title}
-                    className="h-64 w-full object-cover rounded-md cursor-pointer hover:scale-105 transition-all duration-200"
+                    className="w-full h-auto aspect-[180/250] object-cover rounded-md cursor-pointer hover:scale-105 transition-all duration-200"
+                    //className="h-64 w-full object-cover rounded-md cursor-pointer hover:scale-105 transition-all duration-200"
                 />
             </Link>
 
