@@ -5,6 +5,14 @@ const bookSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    author: {
+        type: String,
+        required: true,
+    },
+    isbn: {
+        type: String,
+        required: true,
+    },
     description:  {
         type: String,
         required: true,
@@ -13,25 +21,17 @@ const bookSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    trending: {
-        type: Boolean,
-        required: true,
-    },
     coverImage: {
         type: String,
         required: true,
     },
-    oldPrice: {
-        type: Number,
+    linkAcquisto: {
+        type: String,
         required: true,
     },
-    newPrice: {
-        type: Number,
+    linkDownload: {
+        type: String,
         required: true,
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now,
     }
   }, {
     timestamps: true,
