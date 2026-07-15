@@ -59,7 +59,7 @@ const SignUp = () => {
                 <button 
                   type='submit'
                   disabled={isLoading} //disabilita il pulsante quando isLoading è true, impedendo all'utente di inviare più volte il form mentre la richiesta è in corso// 
-                  className='w-full bg-[#191970] text-[#FAF0E6] py-2 rounded text-base hover:opacity-90 cursor pointer'
+                  className='w-full bg-[#191970] text-[#FAF0E6] py-2 rounded text-base hover:opacity-90 cursor-pointer'
                   >
                     Registrati
                 </button>
