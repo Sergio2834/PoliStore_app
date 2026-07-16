@@ -35,7 +35,7 @@ export const registrati = async (req, res) => {
             res.cookie("token", token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
-                sameSite: "none", //con strict il deployment con Render non funzionava
+                sameSite: "strict", //con strict il deployment con Render non funzionava
             });
         } 
         return res.status(200).json({user: userDoc, message: "Utente creato correttamente!"})
@@ -66,7 +66,7 @@ export const accedi = async (req, res) => {
             res.cookie("token", token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
-                sameSite: "none",
+                sameSite: "strict",
             });
         } 
         return res.status(200).json({user: userDoc, message: "Accesso effettuato correttamente!"})
