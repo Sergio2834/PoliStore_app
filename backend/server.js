@@ -77,7 +77,7 @@ const swaggerOptions = {
         },
         servers: [
             {
-                url: "https://polistore-app.onrender.com",
+                url: "https://polistore-1g78.onrender.com",
                 description: "Production Server (Render)"
             },
             {
