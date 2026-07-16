@@ -77,8 +77,12 @@ const swaggerOptions = {
         },
         servers: [
             {
+                url: "https://polistore-app.onrender.com",
+                description: "Production Server (Render)"
+            },
+            {
                 url: `http://localhost:${PORT}`,
-                description: "Development Server"
+                description: "Development Server (Locale)"
             }
         ],
         components: {
