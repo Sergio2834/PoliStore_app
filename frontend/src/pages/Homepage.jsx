@@ -3,6 +3,7 @@ import Hero from '../components/Hero';
 import CardList from '../components/CardList';
 import Footer from '../components/Footer';
 import { useAuthStore } from '../store/authStore';
+import { Loader } from 'lucide-react';
 
 const Homepage = () => {
     const [books, setBooks] = useState([]);
@@ -24,7 +25,12 @@ const Homepage = () => {
 
         fetchBooks();
     }, []);
-    if (loading) return <div className='text-black p-5 text-center mt-10'>Caricamento libri...</div>;
+
+    if (loading) return( 
+        <div className="flex flex-col items-center justify-center h-[calc(100vh-80px)]">
+            <Loader className="w-10 h-10 animate-spin text-[#191970]" />
+            <p className="mt-4 text-lg font-medium text-gray-600">Caricamento libri...</p>
+        </div>);
 
     // Estraiamo tutte le categorie uniche dai libri ricevuti
     const categories = [...new Set(books.map(book => book.category || 'Generale'))];
