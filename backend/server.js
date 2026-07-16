@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import http from 'http';
 import { Server } from 'socket.io'; 
+import swaggerJsDoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 dotenv.config(); 
 
@@ -63,6 +65,44 @@ io.on('connection', (socket) => {
         }
     });
 });
+
+// --- 2. CONFIGURAZIONE SWAGGER ---
+const swaggerOptions = {
+    swaggerDefinition: {
+        openapi: "3.0.0",
+        info: {
+            title: "PoliStore API",
+            version: "1.0.0",
+            description: "Documentazione delle API del progetto PoliStore",
+        },
+        servers: [
+            {
+                url: "https://polistore-app.onrender.com",
+                description: "Production Server (Render)"
+            },
+            {
+                url: `http://localhost:${PORT}`,
+                description: "Development Server (Locale)"
+            }
+        ],
+        components: {
+            securitySchemes: {
+                cookieAuth: {
+                    type: "apiKey",
+                    in: "cookie",
+                    name: "token"
+                }
+            }
+        }
+    },
+    // Percorsi in cui Swagger andrà a cercare i commenti JSDoc
+    apis: ["./routers/*.js"], 
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
+// --- 3. CREAZIONE DELLA ROTTA PER L'INTERFACCIA DI SWAGGER ---
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 //COLLEGAMENTO ROTTE API
 app.use("/api", routerUser);
