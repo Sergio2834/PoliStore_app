@@ -120,7 +120,7 @@ const SingleBook = () => {
                     <div className='flex flex-col gap-1 text-lg pt-2 '>
                     <p className="mb-3 text-lg"><strong>Autore:</strong> {book.author || 'Sconosciuto'}</p>
                     <p className="mb-3 text-lg capitalize"><strong>Categoria:</strong> {book?.category || 'Generale'}</p>
-                    <p className="mb-3 text-lg"><strong>ISBN:</strong>{book?.isbn || 'Non dispnibile'}</p>
+                    <p className="mb-3 text-lg"><strong>ISBN:</strong> {book?.isbn || 'Non dispnibile'}</p>
                     </div>
                 </div>
 

@@ -24,12 +24,6 @@ const BookCard = ({ book }) => {
             // 4. Chiamata al backend
             const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/users/favorites/${book._id}`)
             toast.success(response.data.message);
-            // Se siamo sulla pagina Preferiti, ricarichiamo per far sparire la card!
-            if (window.location.pathname === '/preferiti') {
-                setTimeout(() => {
-                    window.location.reload();
-                }, 500); // Aspetta mezzo secondo per far leggere il toast
-            }
         } catch (error) {
             console.error(error);
             const errorMessage = error.response.data.message || "Errore di connessione.";

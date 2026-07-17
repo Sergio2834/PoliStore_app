@@ -38,35 +38,31 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="bg-[#191970] text-gray-800 flex justify-between items-center p-4 h-20 text-sm md:text-[15px] font-medium text-nowrap"> 
-        {/*sfondo nero e testo grigio chiaro; justify between distribuisce lo spazio mettendo il primo elemento tutto a sinistra e l'ultimo tutto a destra; 
-        allinea al centro verticalmente tutti gli elementi padding cioè spaziatura interna sui 4 lati pari a 1rem cioè 16px; altezza di 20; dimensione font 14px e 15px a partire da schermi medi; font medium; text-nowrap impedisce che il testo vada a capo*/}
-            
+        <nav className="bg-[#191970] text-gray-800 flex justify-between items-center p-4 h-20 text-sm md:text-[15px] font-medium text-nowrap">     
             <Link to={"/"} className="flex items-center gap-3">
-                <img src={Logo} alt="Logo" className="h-12 md:h-16 w-auto cursor-pointer brightness-125" /> {/*imposta la larghezza a 96px, cambia il cursore in pointer quando si passa sopra e aumenta la luminosità del logo del 25%*/}
+                <img src={Logo} alt="Logo" className="h-12 md:h-16 w-auto cursor-pointer brightness-125" />
                 <img src={ScrittaLogo} alt="PoliStore" className="h-5 w-auto cursor-pointer hidden sm:inline"/>
             </Link> 
             
             <div className="flex items-center space-x-2 md:space-x-4 relative"> 
-                <div className="relative hidden md:inline-flex"> {/*relative necessario per sovrapporre l'icona di ricerca all'input di testo; space-x-4 aggiunge uno spazio orizzontale di 1rem tra gli elementi; di default nasconde il div e lo mostra solo su schermi medi*/}
+                <div className="relative hidden md:inline-flex">
                     <input 
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         onKeyDown={handleSearch}
-                        className="bg-[#FAF0E6] px-4 py-2 rounded-full min-w-72 pr-10 outline-none" /*rounded-full rende l'input completamente arrotondato; min-w-72 imposta una larghezza minima di 18rem; pr-10 aggiunge un padding a destra di 2.5rem per fare spazio all'icona di ricerca; outline-none rimuove il bordo di focus predefinito*/
-                        placeholder='Cerca...' />
+                        className="bg-[#FAF0E6] px-4 py-2 rounded-full min-w-72 pr-10 outline-none" placeholder='Cerca...' />
                     <Search className="absolute top-2 right-4 w-5 h-5"
                         onClick={handleIconClick} // Cliccabile anche l'icona
                         className="absolute top-2 right-4 w-5 h-5 cursor-pointer" />  
                 </div>
                 
-                {user ? (<Link to={"/preferiti"}> {/*Apre una nuova pagina quando si clicca sul pulsante del carrello*/}
+                {user ? (<Link to={"/preferiti"}>
                 <button className='flex justify-center items-center h-9 bg-[#FAF0E6] text-black py-3 px-4 rounded-full cursor-pointer text-sm md:text-base'>
                     <Heart className=" w-5 h-5 md:mr-2" />
                     <span className="hidden md:inline">Preferiti</span>
                 </button>
-                </Link>) : (<Link to={"/signup"}> {/*Apre una nuova pagina quando si clicca sul pulsante di accesso*/}
+                </Link>) : (<Link to={"/signup"}>
                 <button className='flex justify-center items-center h-9 bg-[#FAF0E6] text-black py-3 px-4 rounded-full cursor-pointer text-sm md:text-base'>
                     <UserPlus className="w-5 h-5 md:mr-2" />
                     <span className="hidden md:inline">Registrati</span>
@@ -74,7 +70,7 @@ const Navbar = () => {
                 </Link> )}
                 
 
-                {!user ? (<Link to={"/signin"}> {/*Apre una nuova pagina quando si clicca sul pulsante di accesso*/}
+                {!user ? (<Link to={"/signin"}>
                 <button className='flex justify-center items-center h-9 bg-[#FAF0E6] text-black py-3 px-4 rounded-full cursor-pointer text-sm md:text-base'>
                     <User className="mr-2 w-4 h-5 md:w-5 md:h-5" />Accedi
                 </button>
