@@ -35,7 +35,7 @@ export const registrati = async (req, res) => {
             res.cookie("token", token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === "production",
-                sameSite: "none",
+                sameSite: "lax",
             });
         } 
         return res.status(200).json({user: userDoc, message: "Utente creato correttamente!"})
