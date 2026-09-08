@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, ShoppingCart, Download, ChevronDown, ChevronUp, Eye } from 'lucide-react';
+import { Heart, ShoppingCart, Download, ChevronDown, ChevronUp, Eye, MessageCircle, X } from 'lucide-react';
 import { useParams } from "react-router"
 import toast from 'react-hot-toast';
 import { getImgUrl } from '../utils/getImgUrl';
@@ -13,10 +13,12 @@ const SingleBook = () => {
     const [loading, setLoading] = useState(true);
     const { user, setUser} = useAuthStore();
     const [isFavorite, setIsFavorite] = useState(false);
-
     const [isExpanded, setIsExpanded] = useState(false);
-
     const [viewers, setViewers] = useState(1);
+    const [socket, setSocket] = useState(null);
+    const [messages, setMessages] = useState([]);
+    const [currentMessage, setCurrentMessage] = useState ("");
+    const [isChatOpen, setIsChatOpen] = useState(false);
 
     useEffect(() => {
         const fetchSingleBook = async () => {
@@ -34,26 +36,41 @@ const SingleBook = () => {
     }, [id]);
 
     useEffect(() => {
-        // Avviamo il socket solo se il libro è stato caricato correttamente
-        if (!book) return;
+    if (!book) return;
 
-        // Inizializza la connessione socket col server
-        const socket = io(import.meta.env.VITE_BACKEND_URL);
+    const newSocket = io(import.meta.env.VITE_BACKEND_URL);
+    setSocket(newSocket);
 
-        // Entra nella stanza specifica di questo libro
-        socket.emit('join-book', book._id);
+    newSocket.emit('join-book', book._id);
 
-        // Mettiti in ascolto degli aggiornamenti dal server
-        socket.on('viewers-count', (count) => {
-            setViewers(count);
-        });
+    newSocket.on('viewers-count', (count) => {
+        setViewers(count);
+    });
 
-        // Cleanup: quando esci dalla pagina o il componente viene smontato
-        return () => {
-            socket.emit('leave-book', book._id);
-            socket.disconnect();
+    newSocket.on('receive-message', (messageData) => {
+        setMessages((prev) => [...prev, messageData]);
+    });
+
+     return () => {
+        newSocket.emit('leave-book', book._id);
+        newSocket.disconnect();
+    };
+}, [book]);
+
+const sendMessage = (e) => {
+    e.preventDefault();
+    if (currentMessage.trim() !== "" && user) {
+        const messageData = {
+            bookId: book._id,
+            username: user.username,
+            text: currentMessage,
+            time: new Date().toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })
         };
-    }, [book]);
+        
+        socket.emit('send-message', messageData);
+        setCurrentMessage(""); 
+    }
+};
 
     useEffect(() => {
         if (user && user.favorites && book) {
@@ -151,7 +168,7 @@ const SingleBook = () => {
                             onClick={handleAddToFavorites} 
                             className={`${isFavorite ? 'bg-[#A53030] hover:bg-red-700' : 'bg-[#191970] hover:bg-blue-700'} flex-1 py-4 px-2 rounded-md flex justify-center items-center gap-2 transition-colors font-bold shadow-md text-sm xl:text-base`}
                             >
-                            <Heart className="w-6 h-6" flex-shrink-0 fill={isFavorite ? "currentColor" : "none"} />
+                            <Heart className="w-6 h-6 flex-shrink-0" fill={isFavorite ? "currentColor" : "none"} />
                             <span className="text-center">
                                 {isFavorite ? 'Rimuovi dai preferiti' : 'Aggiungi ai preferiti'}
                             </span>
@@ -189,6 +206,58 @@ const SingleBook = () => {
                     </div>              
                 </div>
             </div>
+            {/* Bottone Fluttuante */}
+    <button 
+        onClick={() => setIsChatOpen(true)}
+        className="fixed bottom-6 right-6 bg-[#191970] text-white p-4 rounded-full shadow-2xl hover:bg-blue-800 transition-colors z-40 flex items-center gap-2 cursor-pointer"
+    >
+        <MessageCircle className="w-6 h-6" />
+        <span className="hidden md:inline font-bold">Chat Live</span>
+    </button>
+
+    {/* Pannello Laterale */}
+    <div className={`fixed top-0 right-0 h-full w-full sm:w-96 bg-white shadow-2xl z-50 transform transition-transform duration-300 flex flex-col ${isChatOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+        
+        <div className="bg-[#191970] text-white font-bold py-4 px-4 flex justify-between items-center shadow-md z-10">
+            <span className="text-lg">Live Chat Studenti</span>
+            <button onClick={() => setIsChatOpen(false)} className="hover:text-gray-300 cursor-pointer">
+                <X className="w-6 h-6" />
+            </button>
+        </div>
+        
+        <div className="flex-1 p-4 overflow-y-auto bg-[#FAF0E6] flex flex-col gap-3">
+            {messages.length === 0 ? (
+                <p className="text-gray-500 text-sm text-center my-auto">Nessun messaggio. Inizia tu la conversazione!</p>
+            ) : (
+                messages.map((msg, index) => (
+                    <div key={index} className={`flex flex-col ${msg.username === user?.username ? 'items-end' : 'items-start'}`}>
+                        <span className="text-xs text-gray-500 mb-1">{msg.username} • {msg.time}</span>
+                        <div className={`py-2 px-3 rounded-lg max-w-[85%] break-words ${msg.username === user?.username ? 'bg-blue-200 text-blue-900 rounded-tr-none' : 'bg-gray-200 text-gray-800 rounded-tl-none'}`}>
+                            {msg.text}
+                        </div>
+                    </div>
+                ))
+            )}
+        </div>
+
+        <form onSubmit={sendMessage} className="flex p-3 border-t border-gray-200 bg-white">
+            <input 
+                type="text" 
+                value={currentMessage}
+                onChange={(e) => setCurrentMessage(e.target.value)}
+                placeholder={user ? "Scrivi un messaggio..." : "Accedi per chattare"}
+                disabled={!user}
+                className="flex-1 px-3 py-3 border border-gray-300 rounded-l-md focus:outline-none focus:border-[#191970] disabled:bg-gray-100 text-black"
+            />
+            <button 
+                type="submit" 
+                disabled={!user || currentMessage.trim() === ""}
+                className="bg-[#191970] text-white px-5 py-3 rounded-r-md font-bold disabled:bg-gray-400 cursor-pointer"
+            >
+                Invia
+            </button>
+        </form>
+    </div>
         </div>
     )
     
