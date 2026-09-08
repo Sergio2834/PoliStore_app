@@ -52,9 +52,9 @@ const Navbar = () => {
                         onChange={(e) => setSearchQuery(e.target.value)}
                         onKeyDown={handleSearch}
                         className="bg-[#FAF0E6] px-4 py-2 rounded-full min-w-72 pr-10 outline-none" placeholder='Cerca...' />
-                    <Search className="absolute top-2 right-4 w-5 h-5"
-                        onClick={handleIconClick} // Cliccabile anche l'icona
-                        className="absolute top-2 right-4 w-5 h-5 cursor-pointer" />  
+                    <Search className="absolute top-2 right-4 w-5 h-5 cursor-pointer"
+                            onClick={handleIconClick} // Cliccabile anche l'icona
+                         />  
                 </div>
                 
                 {user ? (<Link to={"/preferiti"}>
