@@ -47,6 +47,11 @@ io.on('connection', (socket) => {
         io.to(bookId).emit('viewers-count', viewersCount);
     });
 
+    //Ascolta e inoltra i messaggi di chat
+    socket.on('send-message', (data) => {
+        io.to(data.bookId).emit('receive-message', data);
+    });
+
     // Quando un utente esce volontariamente dalla pagina
     socket.on('leave-book', (bookId) => {
         socket.leave(bookId);
